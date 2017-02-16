@@ -1,4 +1,37 @@
 ## A LIBRARY MEANT FOR MOI'S DAILY PROGRAMMING 
+import os, sys, time, datetime
+
+
+
+def getfilenames(included_extenstions,relevant_path):
+    file_names = [fn for fn in os.listdir(relevant_path)
+        if any(fn.endswith(ext) for ext in included_extenstions)]
+    return  file_names
+
+def parsealltimes(file_names):
+    alltimes=[]
+    for fil in file_names:
+        (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(fil)
+        # print "last modified: %s" % time.ctime(mtime)
+        parsedtime=time.strftime("%Y_%m_%d", time.gmtime(mtime))
+        print time.strftime("%Y_%m_%d", time.gmtime(mtime))
+        alltimes.append(parsedtime)
+    return alltimes
+
+def makefolders(uniquedates):
+    for x in uniquedates:
+        print x
+        if not os.path.exists(x):
+            os.makedirs(x)
+
+def renameinfolders(file_names,alltimes):
+    for (myfile,mydate) in zip(file_names,alltimes):
+        print myfile, mydate
+        targetfolder= [x for x in uniquedates if x == mydate]
+        print "this is target folder: %s" %(targetfolder)
+        newname=str(mydate+"/"+myfile)
+        print newname
+        os.rename(myfile,newname)
 
 
 def monitor_successfiles(foldername, filenames=None, time_wait='1h', time_max='48h'):
